@@ -5,19 +5,18 @@ library(haven)
 library(data.table)
 hh<-read_dta("D:\\tang_data\\hh.dta")
 hh<-dplyr::select(hh,HH1,HH2,HC1A,HC1B,HC2,HH7,helevel)
-hh[]<-lapply(hh, unclass)
 hh$HH<-paste(hh$HH1,hh$HH2,sep = "_")
 sum(duplicated(hh$HH))
 
 wm<-read_dta("D:\\tang_data\\wm.dta")
 wm<-dplyr::select(wm,LN,HH1,CM11,HH2,MA1,WM6Y,WB5,WB6A,WB6B,
                   welevel,insurance,wscoreu,wscorer,CM11,WB18,WM14,WM15,WB3Y,WB4,WDOBLC,MN2,MN5
-                  ,MN20,PN5,PN17,MN19A,MN19C,MN19D,MN19F,MN19G,MN19H,MN19X,MN19Y,PN9,PN20,PN25A,PN25B,PN25C,CM17)
+                  ,MN20,PN5,PN17,MN19A,MN19C,MN19D,MN19F,MN19G,MN19H,MN19X,MN19Y,PN9,PN20,PN25A,PN25B,PN25C,CM17,wmweight)
 wm$HH<-paste(wm$HH1,wm$HH2,sep = "_")
 wm$HHL<-paste(wm$HH,wm$LN,sep = "_")
 table(wm$HHL)
 sum(duplicated(wm$HHL))
-wm[] <- lapply(wm, unclass)
+
 sum(duplicated(wm$HH))
 wm_new<-base::merge(wm,hh,by=c("HH","HH1","HH2"),all=F)
 rm(hh,wm)
