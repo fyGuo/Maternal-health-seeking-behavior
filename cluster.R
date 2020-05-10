@@ -34,6 +34,7 @@ cluster1<-r$cluster
 #So let's turn to orignial methods
 hsb<-dplyr::select(wm_clean,MN2,ac4,probithpl,PN25A,
                    PN25B,PN25C)
+
 s<-fviz_nbclust(x=hsb,FUNcluster =  kmodes, method = "silhouette",k.max = 5)
 s
 set.seed(2)
