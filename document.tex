@@ -1,0 +1,330 @@
+\documentclass[13pt]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage[T1]{fontenc}
+\usepackage{caption}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\renewcommand{\footnotesize}{\scriptsize}
+\captionsetup[table]{font=scriptsize}
+\setlength{\abovecaptionskip}{6pt} 
+\setlength{\belowcaptionskip}{-3pt}
+
+\renewcommand{\footnotesize}{\fontsize{9pt}{12pt}\selectfont}
+\usetheme{Madrid}
+\usepackage{booktabs}
+
+\usepackage[style=chem-rsc,backend=bibtex]{biblatex}
+\renewcommand*{\bibfont}{\tiny}
+\renewcommand*{\multicitedelim}{\iffootnote{\newline}{\addsemicolon\space}}
+\renewcommand{\bibfootnotewrapper}[1]{\bibsentence #1}
+\addbibresource{mybib.bib}
+\renewcommand{\footnotesize}{\tiny}
+
+
+
+
+\usepackage{graphicx} % Allows including images
+\usepackage{booktabs}
+\usecolortheme{beaver}
+\AtBeginSection[]
+{
+	\begin{frame}
+		\frametitle{Table of Contents}
+		\tableofcontents[currentsection]
+	\end{frame}
+}
+
+\title[Maternal Health-Seeking Behavior in DRC]{Maternal Health-Seeking Behavior and Associated Factors in Democratic Republic of the Congo}
+\subtitle{An Application of Generalized Ordered Logistic Regression}
+\author[Guo, Xiong] 
+{Fuyu Guo\inst{1} \and Huayi Xiong\inst{2}}
+\institute[Tang Group]{ \inst{1}%
+	School of Public Health\\
+	Peking University
+	\and
+	\inst{2}%
+	School of Medical Humanities\\
+	Peking University}
+\date{\today}
+
+\begin{document}
+
+
+\begin{frame}
+	\titlepage
+\end{frame}
+
+\begin{frame}
+	\frametitle{Table of Contents}
+	\tableofcontents
+\end{frame}
+
+\section{Background}
+\begin{frame}
+	\frametitle{Background}
+	
+	According to previous studies, most of the maternal and neonatal deaths are largely preventable in developing countries if maternal health services are provided and fully utilized\footfullcite{Chalise2019}.
+	 
+	Generally, Maternal health is the health of women during pregnancy, childbirth and the postpartum period\footfullcite{Kifle2017}.  
+	\begin{block}{Maternal health-seeking behavior therefore includes}
+		\begin{itemize}
+			\item  Antenatal care (ANC)
+			\item  Delivery care
+			\item Postnatal care (PNC)
+		\end{itemize}
+	\end{block}
+\end{frame}
+\begin{frame}
+	\frametitle{Background}
+ Several factors associated with women's maternal health-seeking behavior in different aspects were discovered in  recent literature.\footfullcite{Chomat2014}$^{,\hspace{2pt}}$\footfullcite{Acharya2015}$^{,\hspace{2pt}}$\footfullcite{Benova2014}
+			\begin{columns}
+			\begin{column}{0.3\textwidth}
+			\begin{block}{Women}
+				\begin{minipage}[c][0.45\textheight][c]{\linewidth}
+				\begin{itemize}
+				\item  Age 
+				\item Education Level
+				\item Marital Status
+				\item Language Fluency
+				\item Birth history
+				\item Mass Media Exposure
+				\end{itemize}
+			\end{minipage}
+			\end{block}
+			\end{column}
+			\begin{column}{0.3\textwidth}
+			\begin{exampleblock}{householder}
+				\begin{minipage}[c][0.45\textheight][c]{\linewidth}
+				\begin{itemize}
+					\item Gender
+					\item Education Level
+					\item Marital Status
+					\item Language Fluency
+					\item Religion Belief
+				\end{itemize}
+			\end{minipage}
+			\end{exampleblock}
+			\end{column}
+			\begin{column}{0.3\textwidth}
+			\begin{alertblock}{household}
+				\begin{minipage}[c][0.45\textheight][c]{\linewidth}
+				\begin{itemize}
+				\item Residual Region
+				\item Wealth Status
+				\item Health Facility
+				\end{itemize}
+			\end{minipage}
+			\end{alertblock}
+			\end{column}			
+		\end{columns}
+\end{frame}
+
+\section{Method}
+
+\subsection{Data Source}
+\begin{frame}
+	\frametitle{Data source}
+	In this study, We used microdata from the Multiple Indicator Clusters Survey (MICS) conducted in DRC from 2017-2018.\\
+	Women who (1) gave birth in last two years before the survey, (2) with completed questions in relation to the whole maternal health-seeking process through antenatal care to postnatal care were included in this research (N=8467).\\
+	\begin{block}{Analysis Pipline}
+		\begin{itemize}
+			\item Cluster women into different groups based on their health-seeking behavior
+			\item Descriptive Stats on different groups and their distribution in DRC
+			\item Explore factors associated (or influenced) their behavior patterns
+		\end{itemize}
+	\end{block}
+\end{frame}
+\subsection{Clustering Analysis: K-modes algorithm}
+\begin{frame}
+	\frametitle{Idea about Clustering Analysis}
+	   \begin{columns}
+	   	\column{0.5\textwidth}
+	   	\centering
+	   	\includegraphics[width=\linewidth]{Pre_1.png}
+	   	\column{0.5\textwidth}
+	   	\centering
+	   	\includegraphics[width=\linewidth]{Pre_2.png}
+	  \end{columns}
+  Using K-means algorithm, inital massive points are clustered into  two groups according to their distance to the Centroid.\\
+  Similar methods are used in Categorical Variables with much a higher dimension.
+\end{frame}
+
+\begin{frame}
+	Utilizing K-modes algorithm, a extension from K-means dealling with categorical variables, we could cluster women in DRC into three groups based on their maternal health-seeking behavior.\\
+\begin{table}[]
+	\caption{Variables Describing Women's Maternal Health Seeking Behavior}
+	\resizebox{\textwidth}{10mm}{
+	\begin{tabular}{ll}
+		\hline
+		\textbf{Variable}                        & \textbf{Description}                                                                               \\ \hline
+		Antenatal care attendence                & A 0-1 dummy variable indicating if the woman ever attended antenatal care                          \\
+		Antenatal care visits $\geq 4$                & A 0-1 dummy variable indicating if the woman visited antenatal care   facility at least four times \\
+		Delivered in Health Professional facilities                           & A 0-1 dummy varibale indicating if the woman give birth at health   professional facility          \\
+		Postnatal Care: Examine the cord         & A 0-1 dummy varibale indicating if someone exmained the cord after   delivery                      \\
+		Postnatal Care: Examine the temperature  & A 0-1 dummy varibale indicating if someone exmained the baby's   temperature after delivery        \\
+		Postnatal Care: Counsel on breastfeeding & A 0-1 dummy varibale indicating if someone counselled the woman on   breastfeeding after delivery  \\ \hline
+	\end{tabular}
+}
+\end{table}
+\end{frame}
+\begin{frame}
+	\centering
+	Along with Silhouette Index, the optimal number of clusters are set to 3.\\
+	\includegraphics[width=0.5\textwidth]{Index.png}
+	\\
+	Finally, women in DRC are clustered into 3 groups as below
+	\begin{table}[]
+			\resizebox{\textwidth}{10mm}{
+		\begin{tabular}{llll}
+			\hline
+			Behavior                                  & Never Used Group (N=2897) & Half Used Group (N=3335)  & Fully Used Group (N=2235) \\
+			\hline
+			Ever Received Antenatal Care              & No                        & Yes                       & Yes                       \\
+			Received Antenatal Care $\geq$ 4                & No                        & No                        & Yes                       \\
+			Delivered in Health Professional facilities                            & No home              & Yes & Yes \\
+			Received Postnatal Care: Examine the cord & No                        & No                        & Yes                       \\
+			Postnatal Care: Examine the temperature   & No                        & No                        & Yes                       \\
+			Postnatal Care: Counsel on breastfeeding  & No                        & No                        & Yes  \\  
+			\hline                  
+		\end{tabular}
+	}
+	\end{table}
+\end{frame}
+
+\subsection{Generalized Ordered Logistic Regression}
+\begin{frame}
+	\frametitle{Generalized Ordered Logistic Regression}
+	Though K-modes itself didn't create any order information, based on the clustering results, an ordered maternal health seeking behavior pattern could be found. Then traditional multinomial logistic regression was not appropriate for the situation.\\
+	~\\
+	Ordered logistic regression was firstly considered. However, according to Brant test, the proportional odds assumption was violated and finally, a partial proportional odds regression model (PPOM) was used to explore the factors associated women's maternal health-seeking behavior. 
+\end{frame}
+
+
+
+\section{Results}
+\subsection{Maternal Health-Seeking Behavior Groups}
+\begin{frame}
+	\frametitle{Results}
+	As the results shown before, the women in DRC were clustered into 3 groups according to their maternal health-seeking behavior.
+		\begin{table}[]
+		\resizebox{\textwidth}{10mm}{
+			\begin{tabular}{llll}
+				\hline
+				Behavior                                  & Seldom Used Group (N=2897) & Half Used Group (N=3335)  & Highly Used Group (N=2235) \\
+				\hline
+				Ever Received Antenatal Care              & No                        & Yes                       & Yes                       \\
+				Received Antenatal Care $\geq$ 4                & No                        & No                        & Yes                       \\
+				Delivery Place                            & Private home              & Health Professional Place & Health Professional Place \\
+				Received Postnatal Care: Examine the cord & No                        & No                        & Yes                       \\
+				Postnatal Care: Examine the temperature   & No                        & No                        & Yes                       \\
+				Postnatal Care: Counsel on breastfeeding  & No                        & No                        & Yes  \\  
+				\hline                  
+			\end{tabular}
+		}
+	\end{table}
+	An orderd pattern in maternal health service utilization could be found from the results.
+\end{frame}
+
+\subsection{Distribution of Groups in DRC}
+\begin{frame}
+	\frametitle{Results}
+	\begin{figure}[!ht]
+	\includegraphics[width=\linewidth]{map.png}
+	\caption{Dominant group in local Province\protect\footnotemark}
+	\end{figure}
+	\footnotetext{{\scriptsize {\tiny Percentage in each group in local province are calculated using sampling weights}}}
+\end{frame}
+
+
+\subsection{Factors Associated with the Behavior Pattern}
+\begin{frame}
+    \frametitle{Regression Results}
+	\begin{table}[]
+	
+	\caption{Results of PPOM\protect\footnotemark}
+	\resizebox{\textwidth}{25mm}{
+	\begin{tabular}{@{}lcc@{}}
+	\toprule
+	\textbf{Variable}                                                                                      & \textbf{\begin{tabular}[c]{@{}c@{}}Highly Used Group \\ versus \\ (Half Used Group \& Seldom Used Group)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}(Highly Used Group \& Half Used Group) \\ versus \\ Seldom Used Group\end{tabular}} \\ \midrule
+	\textbf{Woman’s Individual Features}                                                                                                       &                                                                                                                        &                                                                                                                        \\ \cmidrule(r){1-1}
+	{\color[HTML]{FE0000} \textit{\textbf{Age}}}                                                                                               & {\color[HTML]{FE0000} 0.012 (0.005) *}                                                                                 & 0.004 (0.005)                                                                                                          \\
+	\textit{\textbf{Birth order}}                                                                                                              & 0.005 (0.016)                                                                                                          & 0.005 (0.016)                                                                                                          \\
+	\textit{\textbf{\begin{tabular}[c]{@{}l@{}}Marital Status\\ Reference group Not in a Union\end{tabular}}}                                  & \multicolumn{2}{c}{}                                                                                                                                                                                                                            \\
+	Married or Lived with a Partner                                                                                                            & -0.138 (0.085)                                                                                                         & 0.107 (0.088)                                                                                                          \\
+	{\color[HTML]{FE0000} \textbf{\begin{tabular}[c]{@{}l@{}}Women’ Education\\ Reference group Secondary or Higher \end{tabular}}} & \multicolumn{2}{c}{}                                                                                                                                                                                                                            \\
+	{\color[HTML]{FE0000} Primary}                                                                                                             & {\color[HTML]{FE0000} 0.118 (0.071)}                                                                                   & {\color[HTML]{FE0000} 0.476 (0.073) ***}                                                                               \\
+	{\color[HTML]{FE0000} Pre-primary / none}                                                                                                  & {\color[HTML]{FE0000} 0.298 (0.106) ***}                                                                               & {\color[HTML]{FE0000} 0.743 (0.095) ***}                                                                               \\
+	{\color[HTML]{FE0000} \textbf{Not Fluent in French}}                                                                                       & {\color[HTML]{FE0000} 0.519 (0.143) ***}                                                                               & {\color[HTML]{FE0000} 0.519 (0.143) ***}                                                                               \\
+	{\color[HTML]{FE0000} \textbf{Never Exposed to Mass Media}}                                                                                & {\color[HTML]{FE0000} 0.223 (0.073) **}                                                                                & {\color[HTML]{FE0000} 0.223 (0.073) **}                                                                                \\
+	\textbf{Unwanted Pregnancy for this Child}                                                                                                 & 0.060 (0.057)                                                                                                          & 0.060 (0.057)                                                                                                          \\
+	\textbf{Ever had a Baby Died after Birth}                                                                                                  & -0.037 (0.065)                                                                                                         & -0.037 (0.065)                                                                                                         \\
+	\textbf{Not Covered by Health Insurance}                                                                                                   & 0.187 (0.173)                                                                                                          & 0.187 (0.173)                                                                                                          \\ \bottomrule
+	\end{tabular}
+	}
+	\end{table}
+	\footnotetext{{\tiny Log odds are shown here, positive coefficient means higher possibility in lower utilization level group}}
+	\footnotesize
+    Older Age, Low Education level, Not Fluent in French and Never Exposed to Mass media are risk factors for women to utilize the maternal health care serivices
+\end{frame}
+
+\begin{frame}
+	\begin{table}[]
+		\resizebox{\textwidth}{35.5mm}{
+\begin{tabular}{@{}lcc@{}}
+	\toprule
+	\textbf{Variable}                                                                                                                                & \textbf{\begin{tabular}[c]{@{}c@{}}Highly Used Group \\ versus \\ (Half Used Group \& Seldom Used Group)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}(Highly Used Group \& Half Used Group)\\ versus\\ Seldom Used Group\end{tabular}} \\ \midrule
+	\textbf{Household Header’s Features}                                                                                                             &                                                                                                                        &                                                                                                                      \\ \cmidrule(r){1-1}
+	\textit{\textbf{Household Header’s Gender, Male}}                                                                                                & 0.060 (0.063)                                                                                                          & 0.060 (0.063)                                                                                                        \\
+	\textit{\textbf{\begin{tabular}[c]{@{}l@{}}Household Header’s Education\\ Reference group: Secondary of Higher\end{tabular}}}                    &                                                                                                                        &                                                                                                                      \\
+	Primary                                                                                                                                          & -0.016 (0.062)                                                                                                         & -0.016 (0.062)                                                                                                       \\
+	Pre-primary / none                                                                                                                               & -0.171 (0.094)                                                                                                         & -0.171 (0.094)                                                                                                       \\
+	\textbf{\textit{Household Header isn’t Fluent in French  }}                                                                                                        & -0.130 (0.141)                                                                                                         & -0.130 (0.141)                                                                                                       \\
+	{\color[HTML]{FE0000} \textit{\textbf{\begin{tabular}[c]{@{}l@{}}Ethnics\\ Reference group: Bantu\end{tabular}}}}                                & {\color[HTML]{FE0000} }                                                                                                & {\color[HTML]{FE0000} }                                                                                              \\
+	{\color[HTML]{FE0000} Nilotic}                                                                                                                   & {\color[HTML]{FE0000} -1.093 (0.162) ***}                                                                              & {\color[HTML]{FE0000} -1.093 (0.162) ***}                                                                            \\
+	{\color[HTML]{FE0000} Sudanese}                                                                                                                  & {\color[HTML]{FE0000} 0.130 (0.167)}                                                                                   & {\color[HTML]{FE0000} 0.316 (0.170)}                                                                                 \\
+	{\color[HTML]{FE0000} Pygmy}                                                                                                                     & {\color[HTML]{FE0000} -0.225 (0.643)}                                                                                  & {\color[HTML]{FE0000} -0.225 (0.643)}                                                                                \\
+	{\color[HTML]{FE0000} Other ethnics}                                                                                                             & {\color[HTML]{FE0000} 1.002 (0.199) ***}                                                                               & {\color[HTML]{FE0000} 1.002 (0.199) ***}                                                                             \\
+	{\color[HTML]{FE0000} \textit{\textbf{\begin{tabular}[c]{@{}l@{}}Household Header’s Religion\\ Reference Group: without Religion\end{tabular}}}} & {\color[HTML]{FE0000} }                                                                                                & {\color[HTML]{FE0000} }                                                                                              \\
+	{\color[HTML]{FE0000} Catholic}                                                                                                                  & {\color[HTML]{FE0000} -0.729 (0.179) ***}                                                                              & {\color[HTML]{FE0000} -0.729 (0.179) ***}                                                                            \\
+	{\color[HTML]{FE0000} Protestant}                                                                                                                & {\color[HTML]{FE0000} -0.566 (0.179) **}                                                                               & {\color[HTML]{FE0000} -0.566 (0.179) **}                                                                             \\
+	{\color[HTML]{FE0000} Revival Churches}                                                                                                          & {\color[HTML]{FE0000} -0.572 (0.180) **}                                                                               & {\color[HTML]{FE0000} -0.376 (0.182) **}                                                                             \\
+	{\color[HTML]{FE0000} Other Religions}                                                                                                           & {\color[HTML]{FE0000} -0.511 (0.180) **}                                                                               & {\color[HTML]{FE0000} -0.306 (0.181)}                                                                                \\
+	\textbf{Household Attributes}                                                                                                                    &                                                                                                                        &                                                                                                                      \\ \cmidrule(r){1-1}
+	{\color[HTML]{FE0000} \textit{\textbf{Rural Region}}}                                                                                            & {\color[HTML]{FE0000} 0.505 (0.106) ***}                                                                               & {\color[HTML]{FE0000} 0.505 (0.106) ***}                                                                             \\
+	{\color[HTML]{FE0000} \textit{\textbf{\begin{tabular}[c]{@{}l@{}}Wealth Status\\ Reference Group: Very Rich\end{tabular}}}}                       & {\color[HTML]{FE0000} }                                                                                                & {\color[HTML]{FE0000} }                                                                                              \\
+	{\color[HTML]{FE0000} Rich}                                                                                                                      & {\color[HTML]{FE0000} 0.817 (0.157) ***}                                                                               & {\color[HTML]{FE0000} 0.817 (0.157) ***}                                                                             \\
+	{\color[HTML]{FE0000} Median}                                                                                                                    & {\color[HTML]{FE0000} 0.975 (0.178) ***}                                                                               & {\color[HTML]{FE0000} 1.360 (0.194) ***}                                                                             \\
+	{\color[HTML]{FE0000} Poor}                                                                                                                      & {\color[HTML]{FE0000} 1.166 (0.183) ***}                                                                               & {\color[HTML]{FE0000} 1.593 (0.200) ***}                                                                             \\
+	{\color[HTML]{FE0000} Very Poor}                                                                                                                 & {\color[HTML]{FE0000} 1.517 (0.191) ***}                                                                               & {\color[HTML]{FE0000} 2.076 (0.204) ***}                                                                             \\ \bottomrule
+\end{tabular}
+	}
+	\end{table}
+	\footnotesize Householder's ethnics, religion belief are assoicated with women's maternal health seeking behavior\\
+	Household: Living in Rural Region and Poor household are barriers for women to utilize the maternal health care service.
+	\footnotetext{{\tiny PSU were used as random effect to adjust for clustering effect}}
+\end{frame}
+\section{Primary Conclusion}
+	\begin{frame}
+	\frametitle{Primary Conclusions}
+	\begin{block}{Maternal health care service utilization}
+		{
+		Most women in DRC didn't have a satisfactory maternal health-seeking behavior. Only 26\% women receievd relatively complete process from antenatal care to postnatal care 
+		}
+	\end{block}
+	\begin{exampleblock}{Barriers in women's utilization of maternal health care service}
+		{
+			\begin{itemize}
+				\item Women's individual factors: Older Age; Low education level; Not fluent in French; Never exporused to Mass Media
+				\item Household header's facrors: Ethnics; Religion Beliefs
+				\item Houehold factors: Living in Rural Region; Low Famliy Wealth
+			\end{itemize}
+		}
+	\end{exampleblock}
+	\end{frame}  
+\begin{frame}
+	\centering
+	{\huge Thanks!}
+\end{frame}
+
+\end{document}
