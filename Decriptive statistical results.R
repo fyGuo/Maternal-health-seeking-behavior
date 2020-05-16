@@ -5,6 +5,7 @@ library(rstatix)
 library(ggplot2)
 library(ggpubr)
 library(car)
+library(dplyr)
 wm_clean<-read.csv("D:\\tang_data\\cluster0503.csv")
 wm_clean<-as.data.table(wm_clean)
 wm_clean$cluster<-as.factor(wm_clean$cluster)
@@ -38,10 +39,15 @@ tapply(wm_clean$CM11, wm_clean$cluster, IQR)
 kruskal.test(CM11 ~ cluster, data = wm_clean)
 ##################################################3
 #marital status
-tapply(wm_clean$MA1, wm_clean$cluster, table)
-chisq.test(rbind(c(1627,266,342),c(2095,430,372),c(2491,452,391)))
+wm_clean$MA1[wm_clean$MA1>=2]<-2
+h<-tapply(wm_clean$MA1, wm_clean$cluster, table)
+prop.table(h$`1`)*100
+prop.table(h$`2`)*100
+prop.table(h$`3`)*100
+chisq.test(rbind(h$`1`,h$`2`,h$`3`))
 ##############################################
 #education level
+wm_clean$welevel[wm_clean$welevel>=2]<-2
 h<-tapply(wm_clean$welevel, wm_clean$cluster, table)
 prop.table(h$`1`)*100
 prop.table(h$`2`)*100
@@ -93,9 +99,23 @@ prop.table(h$`3`)*100
 h
 chisq.test(rbind(c(151,2081),c(42,2852),c(85,3247)))
 
+#create a mass media exposure 
 
+wm_clean$media<-1
+wm_clean$media[(wm_clean$MT1==9)&(wm_clean$MT2==9)&(wm_clean$MT3==9)&(wm_clean$MT4==9)]<-9
+wm_clean$media[(wm_clean$MT1==0)&(wm_clean$MT2==0)&(wm_clean$MT3==0)&(wm_clean$MT4==2)]<-0
+wm_clean<-wm_clean[wm_clean$media!=9]
+h<-tapply(wm_clean$media, wm_clean$cluster, table)
+prop.table(h$`1`)*100
+prop.table(h$`2`)*100
+prop.table(h$`3`)*100
+chisq.test(rbind(h$`1`,h$`2`,h$`3`))
+
+wm_clean<-read.csv("D:\\tang_data\\cluster0503.csv")
+wm_clean<-as.data.table(wm_clean)
+wm_clean$cluster<-as.factor(wm_clean$cluster)
 ########################3
-#wanted pregnant
+#wanted pregnancy
 h<-tapply(wm_clean$DB2, wm_clean$cluster, table)
 prop.table(h$`1`)*100
 prop.table(h$`2`)*100
@@ -157,10 +177,11 @@ prop.table(h$`3`)*100
 chisq.test(rbind(h$`1`,h$`2`,h$`3`))
 ###############################
 #household head's education level
+wm_clean$helevel[wm_clean$helevel==9]<-NA
+wm_clean$helevel[wm_clean$helevel>=2&wm_clean$helevel!=9]<-2
 h<-tapply(wm_clean$helevel, wm_clean$cluster, table)
 prop.table(h$`1`)*100
 prop.table(h$`2`)*100
 prop.table(h$`3`)*100
-chisq.test(rbind(h$`1`,h$`2`[1:5],h$`3`[1:5]))
-h$`1`
-h$`2`<-h$`2`[1:5]
+chisq.test(rbind(h$`1`,h$`2`[1:3],h$`3`[1:3]))
+
