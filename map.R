@@ -37,15 +37,12 @@ theme_opts<-list(theme(panel.grid.minor = element_blank(),
                        axis.title.x = element_blank(),
                        axis.title.y = element_blank(),
                        plot.title = element_blank()))
-Congo1_df$cluster<-factor(Congo1_df$cluster,levels=c("cluster_2","cluster_3","cluster_1"),labels =c("Never Used Group","Half Used Group","Fully Used Group"))
+Congo1_df$cluster<-factor(Congo1_df$cluster,levels=c("cluster_2","cluster_3","cluster_1"),labels =c("Seldom Used Group","Half Used Group","Highly Used Group"))
 
-Congo1_df$people_per<-Congo1_df$people_per*100
+#Congo1_df$people_per<-Congo1_df$people_per*100
  
-ggplot() +  geom_polygon(data = Congo1_df, aes(x = long, y = lat, group = group, fill =people_per), color = "black", size = 0.25) +
+ggplot() +  geom_polygon(data = Congo1_df, aes(x = long, y = lat, group = group, fill =cluster), color = "black", size = 0.25) +
         theme(aspect.ratio=1)+theme_opts+
-        facet_grid(.~cluster)+
-        scale_fill_gradient(name="Prevlance for Each Group\n in Local Province, %",low="white",high = "RoyalBlue",breaks=c(20,40,60,80))+
-        theme(strip.background = element_rect(fill="white"),
-              strip.text.x = element_text(size=12,face="bold",hjust=0.7))+
+        scale_fill_manual(name="Dominant Group in Local Province",values = alpha(c("#DC143C","Gold","#3CB371"),alpha = 0.65))+
         theme(legend.title = element_text(face = "bold"))
              
