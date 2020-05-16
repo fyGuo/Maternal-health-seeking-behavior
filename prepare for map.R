@@ -90,8 +90,16 @@ new_cluster$id<-as.numeric(new_cluster$id)
 new_cluster$id <- ceiling(new_cluster$id/3)
 new_cluster$id<-as.character(new_cluster$id)
 
+
+#not use old method
 # calculate the proportion of each cluster in each province 
 m<-tapply(new_cluster$people, new_cluster$NAME_1, sum)
 new_cluster$local_people<-rep(m,each=3)
 head(new_cluster)
 new_cluster$people_per<-new_cluster$people/new_cluster$local_people
+
+#new method choose the dominant group in each province
+new_cluster<-new_cluster[order(new_cluster$NAME_1,new_cluster$people_per),]
+new_cluster$seq<-1:length(new_cluster$NAME_1)
+new_cluster<-new_cluster[new_cluster$seq%%3==0,]
+new_cluster
